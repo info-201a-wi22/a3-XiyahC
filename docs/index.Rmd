@@ -1,0 +1,93 @@
+---
+title: "California Jailing Population between Asian American / Pacific Islander and White"
+author: "Xiyah Chang"
+date: "2022/2/23"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("../source/analysis.R")
+```
+
+## Introduction
+
+This is a report related to jailing of two selected race, _Asian American/Pacific Islander(AAPI)_, and _White_ in _California, U.S_. As an international student who is an Asian, I am interested to explore this data set to understand whether the report will show an obvious racism through _comparing the white race jailing to AAPI race jailing_.  
+
+Looking at the data for California only, there are **`r summary_info$year_length`** years records.  
+
+The prison population is the total number of population in the prison on Dec. 31 of the current recorded year. By looking through the data set, in California, **`r summary_info$max_year`** has the highest total prison population rate **`r summary_info$max_rate`**, which is calculated by "total prison population of the year/total population". 
+
+If we look closer into the year of `r summary_info$max_year`, we can notice that the average white prison population rate is **`r summary_info$white_06`**, whereas the average AAPI prison population rate is **`r summary_info$aapi_06`**, with differences **`r summary_info$diff`**.
+
+## Charts Over Time
+
+Below is a chart of the white prison population rate, throughout the given `r summary_info$year_length` years.
+
+```{r, echo=FALSE}
+ggplot(year_white_avg_prison_pop_rate) +
+  geom_col(mapping = aes(x=year, y=avg_white_prison_pop_rate, fill=year)) +
+  labs(title = "Average White Prison Population Rate by Year in California",
+       subtitle = "From 1970-2018.",
+       x = "Year", y = "Average White Prison Population Rate")
+```
+
+    We can see throw the "Average White Prison Popluation Rate by Year in California" chart, 1998 was the year having the highest average rate of white prison population in California. We also can see that there are data missing from 1970 till 1990, this could be caused by the problem of data-collection (the system to record all these data was not good enough) or, there was no white prison population during those years.
+
+Below is a chart of the aapi prison population rate, throughout the given `r summary_info$year_length` years.
+
+```{r, echo=FALSE}
+ggplot(year_aapi_avg_prison_pop_rate) +
+  geom_col(mapping = aes(x=year, y=avg_aapi_prison_pop_rate, fill=year)) +
+  labs(title = "Average AAPI Prison Population Rate by Year in California",
+       subtitle = "From 1970-2018.",
+       x = "Year", y = "Average AAPI Prison Population Rate")
+```
+
+    From this chart, "Average AAPI Prison Population Rate by Year in California", we see that 2005 has the highest AAPI Prison Population. This might be due to the large amount of AAPI population started to live in California in this year or other possible events related to AAPI population.
+
+## Comparison of Total Prison Population between AAPI and White
+
+Below is a _dodge bar chart_ I used to show the total prison population between AAPI and White, with gender females and males.
+
+```{r, echo=FALSE}
+ggplot(pop_gender) +
+  geom_col(mapping = aes(x = race, y = population, fill = gender), position="dodge")+
+      labs(title = "Total Prison Population between AAPI and White",
+         subtitle = "From 1970-2018",
+         x = "Race", y = "Population")
+```
+
+    From this chart, aapi has relatively lower total prison population comparing to white. The data also shows both aapi and white groups having more male prison population than female prison population. 
+
+## Map - An Overview on AAPI Total Prison Population among All States
+
+Below is a _map_ giving an overview on AAPI total prison population in U.S. from 1970 to 2018.
+
+```{r, echo=FALSE}
+ggplot(state_shape) +
+  geom_polygon(
+    mapping = aes(x = long, y = lat, group = group, fill = total_aapi_pop),
+    color = "white",
+    size = .1
+  ) +
+  coord_map() +
+  scale_fill_continuous(low='#132B43', high = "Red") +
+  labs(title = "US Total AAPI Prison Population",
+       subtitle = "From 1970-2018.", 
+       fill = "Total AAPI Prison Pop") +
+  blank_theme
+```
+
+    Through the 48 years, we can see that California had the highest AAPI Prison Population. It might be caused by the large population base of AAPI Population in California. We see that there are other states like Washington State having between 10000 to 20000 total AAPI Prison Population, and there are a lot of states which doesn't have any AAPI Prison Population. This is probably because those states don't have prisons holding AAPI people, or there is no AAPI population living in those states.
+
+
+
+
+
+
+
+
+
+
+
